@@ -71,7 +71,19 @@ const restaurant = {
   },
 };
 
+///////////////////////////////////////
+// The for-of Loop
+const menu = [ ...restaurant.mainMenu, ...restaurant.starterMenu ];
 
+for (const item of menu) {
+  console.log(item);
+}
+
+for (const [idx, item] of menu.entries() ) {
+  console.log(`At index ${idx}, the value is ${item}`);
+  
+}
+/*
 ///////////////////////////////////////
 // Logical Assignment Operators
 const rest1 = {
@@ -104,7 +116,7 @@ rest2.owner &&= '<ANONYMOUS>';
 console.log(rest1);
 console.log(rest2);
 
-/*
+
 ///////////////////////////////////////
 // The Nullish Coalescing Operator
 restaurant.numGuests = 0;
