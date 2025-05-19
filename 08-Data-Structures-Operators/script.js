@@ -59,11 +59,58 @@ const restaurant = {
       `Order received! ${this.starterMenu[starterIndex]} and ${this.mainMenu[mainIndex]} will be delivered to ${address} at ${time}`
     );
   },
-  orderPasta: function(ing1, ing2, ing3){
-    console.log(`Here is your delicious pasta with ${ing1}, ${ing2}, and ${ing3}`);
+  orderPasta: function (ing1, ing2, ing3) {
+    console.log(
+      `Here is your delicious pasta with ${ing1}, ${ing2}, and ${ing3}`
+    );
   },
+
+  orderPizza: function (mainIngredient, ...otherIngredients) {
+    console.log(mainIngredient);
+    console.log(otherIngredients);
+  }
 };
 
+///////////////////////////////////////
+// Rest Pattern and Parameters
+// 1) Destructuring
+
+// SPREAD, because on RIGHT side of =
+const arr = [1, 2, ...[3, 4]];
+
+// REST, beasause on LEFT side of =
+const [a, b, ...others] = [1, 2, 3, 4, 5];
+console.log(a, b, others);
+
+const [pizza, , risotto, ...otherFood] = [
+  ...restaurant.mainMenu,
+  ...restaurant.starterMenu,
+];
+console.log(pizza, risotto, otherFood);
+
+// Objects
+const { sat, ...weekdays } = restaurant.openingHours;
+console.log(weekdays);
+
+// 2) Functions
+const add = function (...numbers) {
+  let sum = 0;
+  for (let idx = 0; idx < numbers.length; idx++) {
+    const num = numbers[idx];
+    sum += num;
+  }
+  console.log(sum);
+};
+
+add(2, 3);
+add(5, 3, 7, 2);
+
+const x = [23, 5, 7];
+add(...x);
+
+restaurant.orderPizza("mushrooms", "onion", "olives", "spinach");
+restaurant.orderPizza("mushrooms");
+/*
 ///////////////////////////////////////
 // The Spread Operator (...)
 const arr = [7, 8, 9];
@@ -111,7 +158,7 @@ restaurantCopy.name = "Ristorante Roma";
 console.log(restaurantCopy.name);
 console.log(restaurant.name);
 
-/*
+
 
 ///////////////////////////////////////
 // Destructuring Objects
