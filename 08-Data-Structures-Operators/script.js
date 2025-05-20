@@ -3,25 +3,6 @@
 // Data needed for a later exercise
 const flights =
   "_Delayed_Departure;fao93766109;txl2133758440;11:25+_Arrival;bru0943384722;fao93766109;11:45+_Delayed_Arrival;hel7439299980;fao93766109;12:05+_Departure;fao93766109;lis2323639855;12:30";
-
-const italianFoods = new Set([
-  "pasta",
-  "gnocchi",
-  "tomatoes",
-  "olive oil",
-  "garlic",
-  "basil",
-]);
-
-const mexicanFoods = new Set([
-  "tortillas",
-  "beans",
-  "rice",
-  "tomatoes",
-  "avocado",
-  "garlic",
-]);
-
 const openingHours = {
   thu: {
     open: 12,
@@ -74,6 +55,93 @@ const restaurant = {
 };
 
 ///////////////////////////////////////
+// Sets
+const ordersSet = new Set([
+  "Pasta",
+  "Pizza",
+  "Pizza",
+  "Risotto",
+  "Pasta",
+  "Pizza",
+]);
+console.log(ordersSet);
+
+console.log(new Set("Jonas"));
+
+console.log(ordersSet.size);
+console.log(ordersSet.has("Pizza"));
+console.log(ordersSet.has("Bread"));
+
+ordersSet.add("Garlic Bread");
+ordersSet.add("Garlic Bread");
+ordersSet.delete("Risotto");
+// ordersSet.clear();
+console.log(ordersSet);
+
+for (const order of ordersSet) {
+  console.log(order);
+}
+
+// Example
+const staff = ["Waiter", "Chef", "Manager", "Waiter", "Chef", "Manager"];
+const staffUnique = [...new Set(staff)];
+console.log(staffUnique);
+
+console.log(
+  new Set(["Waiter", "Chef", "Waiter", "Manager", "Chef", "Waiter"]).size
+);
+console.log(new Set("Ruhul Amin Sharif").size);
+
+const italianFoods = new Set([
+  "pasta",
+  "gnocchi",
+  "tomatoes",
+  "olive oil",
+  "garlic",
+  "basil",
+]);
+
+const mexicanFoods = new Set([
+  "tortillas",
+  "beans",
+  "rice",
+  "tomatoes",
+  "avocado",
+  "garlic",
+]);
+
+const commonFoods = italianFoods.intersection(mexicanFoods);
+console.log("Intersection:", commonFoods);
+console.log([...commonFoods]);
+
+const italianMexicanFusion = italianFoods.union(mexicanFoods);
+console.log("Union:", italianMexicanFusion);
+console.log([...italianMexicanFusion]);
+
+const italianMexicanFusion2 = new Set([
+  ...italianFoods,
+  ...mexicanFoods,
+]);
+console.log("Union 2:", italianMexicanFusion2);
+console.log([...italianMexicanFusion2]);
+
+const uniqueItalianFoods = italianFoods.difference(mexicanFoods);
+console.log("Difference italian:", uniqueItalianFoods);
+
+const uniqueMexicanFoods = mexicanFoods.difference(italianFoods);
+console.log("Difference mexican:", uniqueMexicanFoods);
+
+const uniqueItalianAndMexicanFoods = italianFoods.symmetricDifference(
+  mexicanFoods
+);
+console.log("Symmetric Difference:", uniqueItalianAndMexicanFoods);
+
+console.log(italianFoods.isDisjointFrom(mexicanFoods));
+
+
+/*
+
+///////////////////////////////////////
 // Looping Objects: Object Keys, Values, and Entries
 
 // Property NAMES
@@ -100,7 +168,6 @@ for (const [ day, {open, close} ] of entries) {
   console.log(`On ${day}, we open at ${open}, and close at ${close}`);
 }
 
-/*
 
 ///////////////////////////////////////
 // Optional Chaining
