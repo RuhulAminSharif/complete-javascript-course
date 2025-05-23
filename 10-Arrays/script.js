@@ -71,7 +71,7 @@ const currencies = new Map([
   ["GBP", "Pound sterling"],
 ]);
 
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+let movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
 // Array Methods
@@ -90,12 +90,12 @@ console.log(...arr);
 // console.log(arr.splice(2));
 console.log(arr.splice(-1));
 console.log(arr);
-console.log(arr.splice(1,2));
+console.log(arr.splice(1, 2));
 console.log(arr);
 
 // REVERSE
 arr = ["a", "b", "c", "d", "e"];
-const arr2 = ['j', 'i', 'h', 'g', 'f'];
+const arr2 = ["j", "i", "h", "g", "f"];
 console.log(arr2.reverse());
 console.log(arr2);
 
@@ -105,6 +105,31 @@ console.log(letters);
 console.log([...arr, ...arr2]);
 
 // JOIN
-console.log(letters.join(' - '));
+console.log(letters.join(" - "));
 
+/////////////////////////////////////////////////
+// Looping Arrays: forEach
+movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+console.log("----for of ----");
+// for (const currMovement of movements) {
+for (const [idx, currMovement] of movements.entries()) {
+  if (currMovement > 0) {
+    console.log(`Movement ${idx + 1}: You deposited ${currMovement}`);
+  } else {
+    console.log(
+      `Movement ${idx + 1}: You withdrew ${Math.abs(currMovement)}`
+    );
+  }
+}
 
+console.log("----for each ----");
+// continue and break does not work on forEach loop
+movements.forEach(function (currMovement, idx, arr) {
+  if (currMovement > 0) {
+    console.log(`Movement ${idx + 1}: You deposited ${currMovement}`);
+  } else {
+    console.log(
+      `Movement ${idx + 1}: You withdrew ${Math.abs(currMovement)}`
+    );
+  }
+});
