@@ -116,9 +116,7 @@ for (const [idx, currMovement] of movements.entries()) {
   if (currMovement > 0) {
     console.log(`Movement ${idx + 1}: You deposited ${currMovement}`);
   } else {
-    console.log(
-      `Movement ${idx + 1}: You withdrew ${Math.abs(currMovement)}`
-    );
+    console.log(`Movement ${idx + 1}: You withdrew ${Math.abs(currMovement)}`);
   }
 }
 
@@ -128,8 +126,71 @@ movements.forEach(function (currMovement, idx, arr) {
   if (currMovement > 0) {
     console.log(`Movement ${idx + 1}: You deposited ${currMovement}`);
   } else {
-    console.log(
-      `Movement ${idx + 1}: You withdrew ${Math.abs(currMovement)}`
-    );
+    console.log(`Movement ${idx + 1}: You withdrew ${Math.abs(currMovement)}`);
   }
 });
+
+// Data Transformations: map, filter, and reduce
+
+// The map method
+movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+const eurToUsd = 1.1;
+// const movementsUSD = movements.map( function(currMovement){
+//   return currMovement * eurToUsd;
+// });
+const movementsUSD = movements.map((currMovement) => currMovement * eurToUsd);
+console.log(movements);
+console.log(movementsUSD);
+
+const movementsUSDForOF = [];
+for (const currMovement of movements) {
+  movementsUSDForOF.push(currMovement * eurToUsd);
+}
+console.log(movementsUSDForOF);
+
+const movementsDescription = movements.map(function (currMovement, idx, arr) {
+  let str;
+  if (currMovement > 0) {
+    str = `Movement ${idx + 1}: You deposited ${currMovement}`;
+  } else {
+    str = `Movement ${idx + 1}: You withdrew ${Math.abs(currMovement)}`;
+  }
+  return str;
+});
+console.log(movementsDescription);
+
+// The filter method
+const deposites = movements.filter(function (currMovement, idx, arr) {
+  return currMovement > 0;
+});
+console.log(movements);
+console.log(deposites);
+
+let depositesForOf = [];
+for (const currMovement of movements) {
+  if (currMovement > 0) depositesForOf.push(currMovement);
+}
+console.log(depositesForOf);
+
+const withdrawals = movements.filter(function (currMovement) {
+  return currMovement < 0;
+});
+console.log(withdrawals);
+
+// The reduce method
+const balance = movements.reduce(function (
+  accumulator,
+  currMovement,
+  idx,
+  arr
+) {
+  return (accumulator += currMovement);
+},
+0); // 0 -> the initial value of the accumulator
+console.log(balance);
+
+let balanceForOf = 0;
+for (const currMovement of movements) {
+  balanceForOf += currMovement;
+}
+console.log(balanceForOf);
