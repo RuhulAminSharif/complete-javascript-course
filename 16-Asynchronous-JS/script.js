@@ -22,6 +22,11 @@ const renderCountry = function (data, className = "") {
   countriesContainer.style.opacity = 1;
 };
 
+const renderError = function (msg) {
+  countriesContainer.insertAdjacentText("beforeend", msg);
+  countriesContainer.style.opacity = 1;
+};
+
 /*
 ///////////////////////////////////////
 // Our First AJAX Call: XMLHttpRequest
@@ -135,12 +140,19 @@ getCountryData("bangladesh");
 
 ///////////////////////////////////////
 // Chaining Promises
+// Handling Rejected Promises
+
 const getCountryAndNeighbour = function (country) {
   fetch(`https://restcountries.com/v2/name/${country}`)
-    .then(function (response) {
-      console.log(response);
-      return response.json();
-    })
+    .then(
+      function (response) {
+        console.log(response);
+        return response.json();
+      }
+      // function (err) {
+      //   alert(err);
+      // }
+    )
     .then(function (data) {
       console.log(data);
       renderCountry(data[0]);
@@ -151,12 +163,28 @@ const getCountryAndNeighbour = function (country) {
       console.log(neighbour);
       return fetch(`https://restcountries.com/v2/alpha/${neighbour}`);
     })
-    .then(function (response) {
-      return response.json();
-    })
+    .then(
+      function (response) {
+        return response.json();
+      }
+      // function (err) {
+      //   alert(err);
+      // }
+    )
     .then(function (data2) {
       renderCountry(data2, "neighbour");
+    })
+    .catch(function (err) {
+      // alert(err);
+      // console.error(`${err} 💥💥💥`);
+      renderError(`Something went wrong 💥💥 ${err.message}. Try again!`);
+    })
+    .finally(function(){
+      countriesContainer.style.opacity = 1;
     });
 };
 
-getCountryAndNeighbour("bangladesh");
+btn.addEventListener("click", function () {
+  // getCountryAndNeighbour("bangladesh");
+});
+getCountryAndNeighbour("bangdfdladesh");
