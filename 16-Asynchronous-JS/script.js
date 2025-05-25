@@ -113,6 +113,7 @@ setTimeout(function () {
 
 */
 
+/*
 ///////////////////////////////////////
 // Consuming Promises
 
@@ -129,3 +130,33 @@ const getCountryData = function (country) {
 };
 
 getCountryData("bangladesh");
+
+*/
+
+///////////////////////////////////////
+// Chaining Promises
+const getCountryAndNeighbour = function (country) {
+  fetch(`https://restcountries.com/v2/name/${country}`)
+    .then(function (response) {
+      console.log(response);
+      return response.json();
+    })
+    .then(function (data) {
+      console.log(data);
+      renderCountry(data[0]);
+
+      // GEt neighbour country
+      const neighbour = data[0]?.borders?.[0];
+      if (!neighbour) return;
+      console.log(neighbour);
+      return fetch(`https://restcountries.com/v2/alpha/${neighbour}`);
+    })
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data2) {
+      renderCountry(data2, "neighbour");
+    });
+};
+
+getCountryAndNeighbour("bangladesh");
