@@ -141,12 +141,17 @@ getCountryData("bangladesh");
 ///////////////////////////////////////
 // Chaining Promises
 // Handling Rejected Promises
+// Throwing Errors Manually
 
+/*
 const getCountryAndNeighbour = function (country) {
   fetch(`https://restcountries.com/v2/name/${country}`)
     .then(
       function (response) {
-        console.log(response);
+        // console.log(response);
+        if (response.ok === false) {
+          throw new Error(`Country not found (${response.status})`);
+        }
         return response.json();
       }
       // function (err) {
@@ -165,6 +170,9 @@ const getCountryAndNeighbour = function (country) {
     })
     .then(
       function (response) {
+        if (response.ok === false) {
+          throw new Error(`Country not found (${response.status})`);
+        }
         return response.json();
       }
       // function (err) {
@@ -179,7 +187,47 @@ const getCountryAndNeighbour = function (country) {
       // console.error(`${err} 💥💥💥`);
       renderError(`Something went wrong 💥💥 ${err.message}. Try again!`);
     })
-    .finally(function(){
+    .finally(function () {
+      countriesContainer.style.opacity = 1;
+    });
+};
+*/
+
+const getJSON = function (url, errorMsg = "Something went wrong") {
+  return fetch(url).then(function (response) {
+    if (response.ok === false) {
+      throw new Error(`${errorMsg} (${response.status})`);
+    }
+    return response.json();
+  });
+};
+
+const getCountryAndNeighbour = function (country) {
+  getJSON(`https://restcountries.com/v2/name/${country}`, "Country Not Found")
+    .then(function (data) {
+      console.log(data);
+      renderCountry(data[0]);
+
+      // GEt neighbour country
+      const neighbour = data[0]?.borders?.[0];
+      if (!neighbour) {
+        throw new Error("No neighbour found!");
+      }
+      console.log(neighbour);
+      return getJSON(
+        `https://restcountries.com/v2/alpha/${neighbour}`,
+        "Country Not Found"
+      );
+    })
+    .then(function (data2) {
+      renderCountry(data2, "neighbour");
+    })
+    .catch(function (err) {
+      // alert(err);
+      // console.error(`${err} 💥💥💥`);
+      renderError(`Something went wrong 💥💥 ${err.message}. Try again!`);
+    })
+    .finally(function () {
       countriesContainer.style.opacity = 1;
     });
 };
@@ -187,4 +235,5 @@ const getCountryAndNeighbour = function (country) {
 btn.addEventListener("click", function () {
   // getCountryAndNeighbour("bangladesh");
 });
-getCountryAndNeighbour("bangdfdladesh");
+getCountryAndNeighbour("bangladesh");
+getCountryAndNeighbour("australia");
