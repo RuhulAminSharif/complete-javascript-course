@@ -460,6 +460,7 @@ TEST DATA: Images in the img folder. Test the error handler by passing a wrong i
 
 GOOD LUCK 😀
 */
+/*
 const wait = function (seconds) {
   return new Promise(function (resolve) {
     setTimeout(resolve, seconds * 1000);
@@ -502,3 +503,50 @@ createImage("img/img-1.jpg")
     currentImg.style.display = "none";
   })
   .catch((err) => console.error(err));
+*/
+
+///////////////////////////////////////
+// Consuming Promises with Async/Await
+// Error Handling With try...catch
+
+// fetch(`https://restcountries.com/v2/name/${country}`).then(res => console.log(res))
+
+const getPosition = function () {
+  return new Promise(function (resolve, reject) {
+    navigator.geolocation.getCurrentPosition(resolve, reject);
+  });
+};
+
+const whereAmI = async function () {
+  try {
+    // Geolocation
+    const position = await getPosition();
+    const { latitude, longitude } = position.coords;
+
+    // Reverse GeoCoding
+    const resGeo = await fetch(
+      `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}`
+    );
+    if( resGeo.ok === false ) {
+      throw new Error("Problem getting location data");
+    }
+    const dataGeo = await resGeo.json();
+    // console.log(dataGeo);
+
+    // Country Data
+    const response = await fetch(
+      `https://restcountries.com/v2/name/${dataGeo.countryName}`
+    );
+    if ( response.ok === false) {
+      throw new Error("Problem getting country data");
+    }
+    // console.log(response);
+    const data = await response.json();
+    // console.log(data);
+    renderCountry(data[0]);
+  } catch (error) {
+    console.error(error.message);
+  }
+};
+whereAmI();
+console.log("first");
