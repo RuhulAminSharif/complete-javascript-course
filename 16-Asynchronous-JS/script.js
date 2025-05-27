@@ -332,6 +332,7 @@ console.log("Test End");
 
 */
 
+/*
 ///////////////////////////////////////
 // Building a Simple Promise
 const lotteryPromise = new Promise(function (resolve, reject) {
@@ -371,4 +372,55 @@ wait(2)
   Promise.resolve("abs").then((x) => console.log(x));
   Promise.reject(new Error("Problem")).then((x) => console.error(x));
 
-  
+*/
+
+///////////////////////////////////////
+// Promisifying the Geolocation API
+console.log("Getting position");
+
+const getPosition = function () {
+  return new Promise(function (resolve, reject) {
+    // navigator.geolocation.getCurrentPosition(
+    //   (position) => resolve(position),
+    //   (err) => reject(err)
+    // );
+    navigator.geolocation.getCurrentPosition(resolve, reject);
+  });
+};
+
+const whereAmI = function () {
+  getPosition()
+    .then(function (position) {
+      const { latitude, longitude } = position.coords;
+      return fetch(
+        `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}`
+      );
+    })
+    .then(function (response) {
+      if (response.ok === false) {
+        throw new Error(`Problem with geocoding ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(function (data) {
+      console.log(data);
+      const city = data.city;
+      const country = data.countryName;
+      const location = `You are in ${city}, ${country}`;
+      console.log(location);
+      return fetch(`https://restcountries.com/v2/name/${country}`);
+    })
+    .then(function (response) {
+      if (response.ok === false) {
+        throw new Error(`Country not found (${response.status})`);
+      }
+      return response.json();
+    })
+    .then(function (data2) {
+      renderCountry(data2[0]);
+    })
+    .catch(function (err) {
+      console.error(`${err.message}`);
+    });
+};
+btn.addEventListener("click", whereAmI);
