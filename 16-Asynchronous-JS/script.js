@@ -313,6 +313,7 @@ whereAmI(40.7127281, -74.0060152);
 
 */
 
+/*
 ///////////////////////////////////////
 // The Event Loop in Practice
 console.log("Test Start");
@@ -324,9 +325,50 @@ Promise.resolve("Resolved promise 1").then(function (response) {
 });
 
 Promise.resolve("Resolved promise 2").then(function (response) {
-  for( let i = 0; i < 1000000000; i += 1 ) {
-
-  }
+  for (let i = 0; i < 1000000000; i += 1) {}
   console.log(response);
 });
-console.log('Test End');
+console.log("Test End");
+
+*/
+
+///////////////////////////////////////
+// Building a Simple Promise
+const lotteryPromise = new Promise(function (resolve, reject) {
+  console.log("Lottery draw is happening");
+  setTimeout(() => {
+    if (Math.random() >= 0.5) {
+      resolve("You WIN");
+    } else {
+      reject(new Error("You lost your money"));
+    }
+  }, 2000);
+});
+
+lotteryPromise
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (err) {
+    console.error(err);
+  });
+
+// Promisifying setTimeout
+const wait = function (seconds) {
+  return new Promise(function (resolve) {
+    setTimeout(resolve, seconds * 1000);
+  });
+};
+wait(2)
+  .then(() => {
+    console.log("Waited for 2 seconds");
+    return wait(1);
+  })
+  .then(() => {
+    console.log("waited for 1 seocond");
+  });
+
+  Promise.resolve("abs").then((x) => console.log(x));
+  Promise.reject(new Error("Problem")).then((x) => console.error(x));
+
+  
